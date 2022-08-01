@@ -1,11 +1,22 @@
 <?php
-function countCharacter($string)
-{
+$string = "CLeeeEEMMMss";
+function charCount($string){
     $charArray = str_split($string);
+    $charWithNumber = array();
+    foreach ($charArray as $char) {
+        if (array_key_exists($char, $charWithNumber)){
+            $charWithNumber[$char]++;
+        }else{
+            $charWithNumber[$char] = 1;
+        }
+    }
+    $stringWithCharNumber = '';
+    foreach ($charWithNumber as $char => $number) {
+        $stringWithCharNumber .= $char.$number;
 
-    return array_count_values($charArray);
+    }
+    echo $stringWithCharNumber;
+    /*    echo '<pre>';
+        var_dump($stringWithCharNumber);*/
 }
-
-$string = 'CLeeeEEMMMss';
-
-print_r(countCharacter($string));
+charCount($string);
