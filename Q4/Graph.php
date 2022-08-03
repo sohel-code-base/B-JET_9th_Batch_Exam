@@ -5,6 +5,7 @@ class Graph
 {
     private int $numberOfVertices;
     private int $edges = 0;
+    private int $summation = 0;
     private array $adj = array();
 
     public function __construct($numberOfVertices)
@@ -16,48 +17,62 @@ class Graph
         }
     }
 
-    public function addEdge($v1, $v2){
-        array_push($this->adj[$v1], $v2);
-        array_push($this->adj[$v2], $v1);
+    public function addEdge($v1, $v2, $weight)
+    {
+        $this->adj[$v1][$v2] = $weight;
+        $this->adj[$v2][$v1] = $weight;
         $this->edges++;
     }
 
-    public function showAdjList(){
+    public function showAdjList()
+    {
+        echo "<h2>Adjacency List:</h2>";
         for ($i = 0; $i < $this->numberOfVertices; ++$i){
             $list = $i;
-            for ($j = 0; $j < $this->numberOfVertices; ++$j){
-                if (isset($this->adj[$i][$j])){
-                    $list .= '--> ' . $this->adj[$i][$j];
+
+            if (isset($this->adj[$i])){
+                foreach ($this->adj[$i] as $vertex => $weight) {
+                    $list .= '--> ' . $vertex;
                 }
             }
             echo $list . "<br>";
         }
     }
 
+    public function showAdjMatrix()
+    {
+        echo "<h2>Adjacent Matrix:</h2>";
+        echo "<table border='1' width='500px'><tbody>";
+        foreach ($this->adj as $rows) {
+            echo "<tr>";
+            for ($i = 0; $i < $this->numberOfVertices; ++$i){
+                echo "<td align='center'>";
+                if (isset($rows[$i])){
+                    echo $rows[$i];
+                    $this->summation += $rows[$i];
+                }else{
+                    echo 0;
+                }
+                echo "</td>";
+            }
+            echo "</tr>";
+        }
+
+        echo "</tbody></table>";
+        echo "<h2>Total Summation= $this->summation</h2>";
+    }
+
 }
 
 $graph = new Graph(7);
-$graph->addEdge(0,1);
-//$graph->addEdge(1,0);
+$graph->addEdge(0,1,6);
+$graph->addEdge(0,2,7);
+$graph->addEdge(1,2,13);
+$graph->addEdge(1,3,8);
+$graph->addEdge(2,4,10);
+$graph->addEdge(3,4,9);
+$graph->addEdge(4,5,11);
+$graph->addEdge(5,6, 12);
 
-$graph->addEdge(0,2);
-//$graph->addEdge(2,0);
-
-$graph->addEdge(1,2);
-//$graph->addEdge(2,1);
-
-$graph->addEdge(1,3);
-//$graph->addEdge(3,1);
-
-$graph->addEdge(2,4);
-//$graph->addEdge(4,2);
-
-$graph->addEdge(3,4);
-//$graph->addEdge(4,3);
-
-$graph->addEdge(4,5);
-//$graph->addEdge(5,4);
-
-$graph->addEdge(5,6);
-//$graph->addEdge(6,5);
 $graph->showAdjList();
+$graph->showAdjMatrix();
